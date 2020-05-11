@@ -39,9 +39,45 @@ router.get('/:id', (req, res) => {
 //@route  POST  api/ads
 //@desc         Create a new ad
 //access        Private
-router.post('/', (req, res) => {
-  res.send('Create an ad');
-});
+router.post(
+  '/',
+  [
+    auth,
+    [
+      check('title', 'A title is required').not().isEmpty(),
+      check(
+        'desc',
+        'Please enter a longer description (100 characters)'
+      ).isLength({ min: 100 }),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, desc, img, phone, email, type } = req.body;
+
+    try {
+      const newAd = new Ad({
+        title,
+        desc,
+        img,
+        phone,
+        email,
+        type,
+        user: req.user.id,
+      });
+
+      const ad = await newAd.save();
+      res.json(ad);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 //@route  PUT  api/ads/:id
 //@desc         Update an ad
