@@ -10,8 +10,16 @@ const Ad = require('../models/Ad');
 //@route  GET  api/ads
 //@desc         Get all Ads
 //access        Public
-router.get('/', (req, res) => {
-  res.send('Get all ads');
+router.get('/', async (req, res) => {
+  try {
+    const ads = await Ad.find({}).sort({
+      date: -1,
+    });
+    res.json(ads);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 //@route  GET  api/ads/user
@@ -32,8 +40,17 @@ router.get('/user', auth, async (req, res) => {
 //@route  GET  api/ads/:id
 //@desc         Get one Ad
 //access        Public
-router.get('/:id', (req, res) => {
-  res.send('Get a particular ad');
+router.get('/:id', async (req, res) => {
+  try {
+    let ad = await Ad.findById(req.params.id);
+
+    if (!ad) return res.status(404).json({ msg: 'Ad not found' });
+
+    res.json(ad);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 //@route  POST  api/ads
@@ -47,8 +64,8 @@ router.post(
       check('title', 'A title is required').not().isEmpty(),
       check(
         'desc',
-        'Please enter a longer description (100 characters)'
-      ).isLength({ min: 100 }),
+        'Please enter a longer description (50 characters)'
+      ).isLength({ min: 50 }),
     ],
   ],
   async (req, res) => {
@@ -82,15 +99,72 @@ router.post(
 //@route  PUT  api/ads/:id
 //@desc         Update an ad
 //access        Private
-router.put('/:id', (req, res) => {
-  res.send('Update an ad');
-});
+router.put(
+  '/:id',
+  [
+    auth,
+    [
+      check(
+        'desc',
+        'Please enter a longer description (50 characters)'
+      ).isLength({ min: 50 }),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, desc, img, phone, email, type } = req.body;
+
+    try {
+      let ad = await Ad.findById(req.params.id);
+
+      if (!ad) return res.status(404).json({ msg: 'Ad not found' });
+
+      //Make sure user owns contact
+      if (ad.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'Not Authorized' });
+      }
+
+      if (title) ad.title = title;
+      if (desc) ad.desc = desc;
+      if (img) ad.img = img;
+      if (phone) ad.phone = phone;
+      if (email) ad.email = email;
+      if (type) ad.type = type;
+
+      updatedAd = await ad.save();
+      res.json(updatedAd);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 //@route  DELETE  api/ads/:id
 //@desc         Delete an ad
 //access        Private
-router.delete('/:id', (req, res) => {
-  res.send('Delete an ad');
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    let ad = await Ad.findById(req.params.id);
+
+    if (!ad) return res.status(404).json({ msg: 'Ad not found' });
+
+    //Make sure user owns contact
+    if (ad.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'Not Authorized' });
+    }
+
+    await Ad.findOneAndDelete({ _id: req.params.id });
+
+    res.json({ msg: 'Ad Deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;
