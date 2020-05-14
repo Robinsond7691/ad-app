@@ -8,7 +8,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className='ui menu'>
+    <div className='ui stackable menu'>
       <div className='ui container'>
         <div className='header item'>
           <Link to='/' style={styleLink}>
@@ -25,12 +25,12 @@ const Navbar = () => {
         </div>
         <div className='right menu'>
           <div className='link item'>
-            <Link to='/#' style={styleLink}>
+            <Link to='/ads/create' style={styleLink}>
               Post
             </Link>
           </div>
           <div className='link item'>
-            <Link to='/#' style={styleLink}>
+            <Link to='/login' style={styleLink}>
               Log in
             </Link>
           </div>

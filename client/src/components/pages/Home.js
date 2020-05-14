@@ -1,7 +1,8 @@
 import React from 'react';
+import ListAdItems from '../ads/ListAdItems';
 
 const Home = () => {
-  return <div>Home Page</div>;
+  return <ListAdItems />;
 };
 
 export default Home;
