@@ -8,6 +8,7 @@ const AdDispatchContext = createContext();
 const AdProvider = ({ children }) => {
   const initialState = {
     ads: [],
+    ad: {},
   };
 
   const [state, dispatch] = useReducer(adReducer, initialState);
@@ -38,6 +39,15 @@ export const getAds = async (dispatch) => {
   try {
     const res = await axios.get('/api/ads');
     dispatch({ type: 'GET_ADS', payload: res.data });
+  } catch (err) {
+    console.log('error fetching');
+  }
+};
+
+export const getAd = async (dispatch, id) => {
+  try {
+    const res = await axios.get(`/api/ads/${id}`);
+    dispatch({ type: 'GET_AD', payload: res.data });
   } catch (err) {
     console.log('error fetching');
   }
