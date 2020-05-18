@@ -34,6 +34,11 @@ const Navbar = () => {
               Log in
             </Link>
           </div>
+          <div className='link item'>
+            <Link to='/register' style={styleLink}>
+              Register
+            </Link>
+          </div>
         </div>
       </div>
     </div>

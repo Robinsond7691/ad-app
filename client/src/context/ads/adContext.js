@@ -55,3 +55,7 @@ export const getAd = async (dispatch, id) => {
     console.log('error fetching');
   }
 };
+
+export const createAd = (dispatch, ad) => {
+  dispatch({ type: 'CREATE_AD', payload: ad });
+};

@@ -4,9 +4,13 @@ const Login = () => {
   return (
     <>
       <div className='ui text container'>
-        <h3 className='ui header'>Log in</h3>
+        <h3 className='ui header'>Register</h3>
         <div className='ui text container segment'>
           <form className='ui form'>
+            <div className='field'>
+              <label>Name</label>
+              <input type='text' placeholder='name'></input>
+            </div>
             <div className='field'>
               <label>Email</label>
               <input type='text' placeholder='email...'></input>

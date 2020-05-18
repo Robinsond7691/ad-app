@@ -12,6 +12,11 @@ const adReducer = (state, action) => {
         ad: action.payload,
         loading: false,
       };
+    case 'CREATE_AD':
+      return {
+        ...state,
+        ads: [action.payload, ...state.ads],
+      };
     case 'SET_LOADING_TRUE':
       return {
         ...state,
