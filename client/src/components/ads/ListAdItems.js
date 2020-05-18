@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import AdItem from '../ads/AdItem';
 import { getAds, useAdState, useAdDispatch } from '../../context/ads/adContext';
+import Spinner from '../layout/Spinner';
 
 const ListAdItems = () => {
   const state = useAdState();
@@ -10,7 +11,9 @@ const ListAdItems = () => {
     getAds(dispatch);
   }, [dispatch]);
 
-  const { ads } = state;
+  const { ads, loading } = state;
+
+  if (loading) return <Spinner />;
 
   return (
     <>

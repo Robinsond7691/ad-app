@@ -4,11 +4,18 @@ const adReducer = (state, action) => {
       return {
         ...state,
         ads: action.payload,
+        loading: false,
       };
     case 'GET_AD':
       return {
         ...state,
         ad: action.payload,
+        loading: false,
+      };
+    case 'SET_LOADING_TRUE':
+      return {
+        ...state,
+        loading: true,
       };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);

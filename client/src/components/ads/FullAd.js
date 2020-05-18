@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { getAd, useAdState, useAdDispatch } from '../../context/ads/adContext';
+import Spinner from '../layout/Spinner';
 
 const FullAd = ({ match }) => {
   const AdState = useAdState();
@@ -7,9 +8,11 @@ const FullAd = ({ match }) => {
 
   useEffect(() => {
     getAd(AdDispatch, match.params.id);
-  }, [AdDispatch]);
+  }, [AdDispatch, match.params.id]);
 
-  const { ad } = AdState;
+  const { ad, loading } = AdState;
+
+  if (loading) return <Spinner />;
 
   return (
     <div className='ui text container'>
