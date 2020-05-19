@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { createAd, useAdDispatch } from '../../context/ads/adContext';
 
-//To Do
-//implement a view more page                        // DONE
-// Look into implementing log-in
-// Implement Listing, deleting and editing own ads
-// Add tags to the posts
-// Look into implementing a search bar
-// Deploy on Heroku
-
 const CreateAdForm = (props) => {
   const adDispatch = useAdDispatch();
 

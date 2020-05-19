@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import authReducer from './authReducer';
 
 const AuthContext = React.createContext();
@@ -38,7 +39,19 @@ export { AuthProvider, useAuthContext, useAuthDispatch };
 //Load User
 
 //Register User
-
+export const registerUser = async (dispatch, newUser) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  try {
+    const res = await axios.post('/api/users', newUser, config);
+    dispatch({ type: 'REGISTER_SUCCESS', payload: res.data });
+  } catch (err) {
+    dispatch({ type: 'REGISTER_FAIL', payload: err.response.data.msg });
+  }
+};
 //Login User
 
 //Logout
