@@ -36,6 +36,11 @@ const useAuthDispatch = () => {
 export { AuthProvider, useAuthContext, useAuthDispatch };
 
 //Actions
+const config = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
 //Load User
 export const loadUser = async (dispatch) => {
@@ -55,11 +60,6 @@ export const loadUser = async (dispatch) => {
 
 //Register User
 export const registerUser = async (dispatch, newUser) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
   try {
     const res = await axios.post('/api/users', newUser, config);
     dispatch({ type: 'REGISTER_SUCCESS', payload: res.data });
@@ -71,6 +71,16 @@ export const registerUser = async (dispatch, newUser) => {
 };
 
 //Login User
+export const loginUser = async (dispatch, user) => {
+  try {
+    const res = await axios.post('/api/auth', user, config);
+    dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
+
+    loadUser(dispatch);
+  } catch (err) {
+    dispatch({ type: 'LOGIN_FAIL', payload: err.response.data.msg });
+  }
+};
 
 //Logout
 

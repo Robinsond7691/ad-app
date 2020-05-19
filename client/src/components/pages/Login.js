@@ -1,6 +1,22 @@
 import React from 'react';
+import {
+  useAuthContext,
+  useAuthDispatch,
+  loginUser,
+} from '../../context/auth/authContext';
 
-const Login = () => {
+const Login = (props) => {
+  const authDispatch = useAuthDispatch();
+  const authContext = useAuthContext();
+
+  const { isAuthenticated } = authContext;
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/');
+    }
+  }, [isAuthenticated, props.history]);
+
   const [user, setUser] = React.useState({
     email: '',
     password: '',
@@ -10,6 +26,7 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    loginUser(authDispatch, user);
   };
 
   return (
@@ -25,6 +42,7 @@ const Login = () => {
                 placeholder='email...'
                 name='email'
                 onChange={onChange}
+                required
               ></input>
             </div>
             <div className='ui field'>
@@ -34,6 +52,7 @@ const Login = () => {
                 placeholder='password'
                 name='password'
                 onChange={onChange}
+                required
               ></input>
             </div>
             <button className='ui submit button'>Submit</button>
