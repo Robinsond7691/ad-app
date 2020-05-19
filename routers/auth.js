@@ -10,7 +10,7 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
 
 //@route    GET api/auth
-//@desc         Gget logged in user
+//@desc         Get logged in user
 //@acess        Private
 router.get('/', auth, async (req, res) => {
   try {

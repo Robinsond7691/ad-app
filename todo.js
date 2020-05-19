@@ -6,3 +6,5 @@
 // Add tags to the posts
 // Look into implementing a search bar
 // Deploy on Heroku
+
+//Create a practice website where you do the whole backend with user first, including logging, navbar and authentication

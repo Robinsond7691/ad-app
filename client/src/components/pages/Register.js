@@ -1,8 +1,21 @@
-import React from 'react';
-import { useAuthDispatch, registerUser } from '../../context/auth/authContext';
+import React, { useEffect } from 'react';
+import {
+  useAuthContext,
+  useAuthDispatch,
+  registerUser,
+} from '../../context/auth/authContext';
 
-const Login = () => {
+const Login = (props) => {
+  const authContext = useAuthContext();
   const authDispatch = useAuthDispatch();
+
+  const { isAuthenticated } = authContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/');
+    }
+  }, [isAuthenticated, props.history]);
 
   const [user, setUser] = React.useState({
     name: '',

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AdProvider } from './context/ads/adContext';
 import { AuthProvider } from './context/auth/authContext';
+import setAuthToken from './utils/setAuthToken';
 
 import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
@@ -10,6 +11,10 @@ import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import CreateAdForm from './components/ads/CreateAdForm';
 import FullAd from './components/ads/FullAd';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 function App() {
   return (
